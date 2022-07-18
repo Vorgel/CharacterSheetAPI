@@ -1,9 +1,10 @@
-﻿namespace CharacterSheetAPI.Models
-{
-    public class Destiny
-    {
-        public int DestinyID { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace CharacterSheetAPI.Models
+{
+    public class Destiny : IStatistic
+    {
+        [Key]
         public int CharacterID { get; set; }
 
         public short DestinyPoints { get; set; }

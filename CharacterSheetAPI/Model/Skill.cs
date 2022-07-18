@@ -2,7 +2,7 @@
 
 namespace CharacterSheetAPI.Models
 {
-    public class Skill
+    public class Skill : IStatistic
     {
         public int SkillID { get; set; }
 

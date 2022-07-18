@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CharacterSheetAPI.Data;
+using CharacterSheetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CharacterSheetAPI.Data;
-using CharacterSheetAPI.Models;
 
 namespace CharacterSheetAPI.Controllers
 {
@@ -25,10 +20,11 @@ namespace CharacterSheetAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Destiny>>> GetDestinies()
         {
-          if (_context.Destinies == null)
-          {
-              return NotFound();
-          }
+            if (_context.Destinies == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Destinies.ToListAsync();
         }
 
@@ -36,10 +32,10 @@ namespace CharacterSheetAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Destiny>> GetDestiny(int id)
         {
-          if (_context.Destinies == null)
-          {
-              return NotFound();
-          }
+            if (_context.Destinies == null)
+            {
+                return NotFound();
+            }
             var destiny = await _context.Destinies.FindAsync(id);
 
             if (destiny == null)
@@ -55,7 +51,7 @@ namespace CharacterSheetAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDestiny(int id, Destiny destiny)
         {
-            if (id != destiny.DestinyID)
+            if (id != destiny.CharacterID)
             {
                 return BadRequest();
             }
@@ -86,14 +82,14 @@ namespace CharacterSheetAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Destiny>> PostDestiny(Destiny destiny)
         {
-          if (_context.Destinies == null)
-          {
-              return Problem("Entity set 'DataContext.Destinies'  is null.");
-          }
+            if (_context.Destinies == null)
+            {
+                return Problem("Entity set 'DataContext.Destinies'  is null.");
+            }
             _context.Destinies.Add(destiny);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDestiny", new { id = destiny.DestinyID }, destiny);
+            return CreatedAtAction("GetDestiny", new { id = destiny.CharacterID }, destiny);
         }
 
         // DELETE: api/Destinies/5
@@ -118,7 +114,7 @@ namespace CharacterSheetAPI.Controllers
 
         private bool DestinyExists(int id)
         {
-            return (_context.Destinies?.Any(e => e.DestinyID == id)).GetValueOrDefault();
+            return (_context.Destinies?.Any(e => e.CharacterID == id)).GetValueOrDefault();
         }
     }
 }

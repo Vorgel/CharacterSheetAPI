@@ -2,7 +2,7 @@
 
 namespace CharacterSheetAPI.Models
 {
-    public class Incantation
+    public class Incantation : IStatistic
     {
         public int IncantationID { get; set; }
 

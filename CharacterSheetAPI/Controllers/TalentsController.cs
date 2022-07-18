@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CharacterSheetAPI.Data;
+using CharacterSheetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CharacterSheetAPI.Data;
-using CharacterSheetAPI.Models;
 
 namespace CharacterSheetAPI.Controllers
 {
@@ -23,23 +18,26 @@ namespace CharacterSheetAPI.Controllers
 
         // GET: api/Talents
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Talent>>> GetTalents()
+        public async Task<ActionResult<IEnumerable<Talent>>> GetTalents(int characterID = 0)
         {
-          if (_context.Talents == null)
-          {
-              return NotFound();
-          }
-            return await _context.Talents.ToListAsync();
+            if (_context.Talents == null)
+            {
+                return NotFound();
+            }
+
+            return characterID == 0 ?
+                  await _context.Talents.ToListAsync() :
+                  await _context.Talents.Where(x => x.CharacterID == characterID).ToListAsync();
         }
 
         // GET: api/Talents/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Talent>> GetTalent(int id)
         {
-          if (_context.Talents == null)
-          {
-              return NotFound();
-          }
+            if (_context.Talents == null)
+            {
+                return NotFound();
+            }
             var talent = await _context.Talents.FindAsync(id);
 
             if (talent == null)
@@ -86,10 +84,10 @@ namespace CharacterSheetAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Talent>> PostTalent(Talent talent)
         {
-          if (_context.Talents == null)
-          {
-              return Problem("Entity set 'DataContext.Talents'  is null.");
-          }
+            if (_context.Talents == null)
+            {
+                return Problem("Entity set 'DataContext.Talents'  is null.");
+            }
             _context.Talents.Add(talent);
             await _context.SaveChangesAsync();
 

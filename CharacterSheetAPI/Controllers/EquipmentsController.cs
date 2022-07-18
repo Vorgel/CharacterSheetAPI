@@ -18,14 +18,16 @@ namespace CharacterSheetAPI.Controllers
 
         // GET: api/Equipments
         [HttpGet]
-        [Route("api/[controller]/Dupa")]
-        public async Task<ActionResult<IEnumerable<Equipment>>> GetEquipment()
+        public async Task<ActionResult<IEnumerable<Equipment>>> GetEquipments(int characterID = 0)
         {
             if (_context.Equipment == null)
             {
                 return NotFound();
             }
-            return await _context.Equipment.ToListAsync();
+
+            return characterID == 0 ?
+                  await _context.Equipment.ToListAsync() :
+                  await _context.Equipment.Where(x => x.CharacterID == characterID).ToListAsync();
         }
 
         // GET: api/Equipments/5

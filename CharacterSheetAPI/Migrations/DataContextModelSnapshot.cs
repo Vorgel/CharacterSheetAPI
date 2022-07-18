@@ -17,7 +17,7 @@ namespace CharacterSheetAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -33,6 +33,9 @@ namespace CharacterSheetAPI.Migrations
                     b.Property<short?>("Age")
                         .HasColumnType("smallint");
 
+                    b.Property<int?>("AmbitionsCharacterID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Class")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -42,6 +45,12 @@ namespace CharacterSheetAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Profession")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfessionLevel")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfessionPath")
@@ -59,19 +68,18 @@ namespace CharacterSheetAPI.Migrations
 
                     b.HasKey("CharacterID");
 
+                    b.HasIndex("AmbitionsCharacterID");
+
                     b.ToTable("Characters", (string)null);
                 });
 
-            modelBuilder.Entity("CharacterSheetAPI.Models.Ambitions", b =>
+            modelBuilder.Entity("CharacterSheetAPI.Models.Ambition", b =>
                 {
-                    b.Property<int>("AmbitionsID")
+                    b.Property<int>("CharacterID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AmbitionsID"), 1L, 1);
-
-                    b.Property<int>("CharacterID")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CharacterID"), 1L, 1);
 
                     b.Property<string>("LongTermAmbition")
                         .HasColumnType("nvarchar(max)");
@@ -79,24 +87,21 @@ namespace CharacterSheetAPI.Migrations
                     b.Property<string>("ShortTermAmbition")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AmbitionsID");
-
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasKey("CharacterID");
 
                     b.ToTable("Ambitions", (string)null);
                 });
 
             modelBuilder.Entity("CharacterSheetAPI.Models.Appearance", b =>
                 {
-                    b.Property<int>("AppearanceID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppearanceID"), 1L, 1);
-
                     b.Property<int>("CharacterID")
                         .HasColumnType("int");
+
+                    b.Property<string>("BodyDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DistinguishingFeatures")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EyesDescription")
                         .HasColumnType("nvarchar(max)");
@@ -107,10 +112,7 @@ namespace CharacterSheetAPI.Migrations
                     b.Property<short?>("Height")
                         .HasColumnType("smallint");
 
-                    b.HasKey("AppearanceID");
-
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasKey("CharacterID");
 
                     b.ToTable("Appearances", (string)null);
                 });
@@ -174,20 +176,13 @@ namespace CharacterSheetAPI.Migrations
 
                     b.HasKey("CharacteristicsID");
 
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasIndex("CharacterID");
 
                     b.ToTable("Characteristics", (string)null);
                 });
 
             modelBuilder.Entity("CharacterSheetAPI.Models.Destiny", b =>
                 {
-                    b.Property<int>("DestinyID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DestinyID"), 1L, 1);
-
                     b.Property<int>("CharacterID")
                         .HasColumnType("int");
 
@@ -197,10 +192,7 @@ namespace CharacterSheetAPI.Migrations
                     b.Property<short>("LuckPoints")
                         .HasColumnType("smallint");
 
-                    b.HasKey("DestinyID");
-
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasKey("CharacterID");
 
                     b.ToTable("Destinies", (string)null);
                 });
@@ -232,40 +224,22 @@ namespace CharacterSheetAPI.Migrations
 
             modelBuilder.Entity("CharacterSheetAPI.Models.Experience", b =>
                 {
-                    b.Property<int>("ExperienceID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CharacterID")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExperienceID"), 1L, 1);
 
                     b.Property<short>("Available")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("CharacterID")
-                        .HasColumnType("int");
-
                     b.Property<short>("Spent")
                         .HasColumnType("smallint");
 
-                    b.Property<short>("Sum")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("ExperienceID");
-
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasKey("CharacterID");
 
                     b.ToTable("Experiences", (string)null);
                 });
 
             modelBuilder.Entity("CharacterSheetAPI.Models.HeroStats", b =>
                 {
-                    b.Property<int>("HeroStatsID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HeroStatsID"), 1L, 1);
-
                     b.Property<int>("CharacterID")
                         .HasColumnType("int");
 
@@ -279,7 +253,7 @@ namespace CharacterSheetAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("HeroStatsID");
+                    b.HasKey("CharacterID");
 
                     b.ToTable("HeroStats", (string)null);
                 });
@@ -325,6 +299,28 @@ namespace CharacterSheetAPI.Migrations
                     b.ToTable("Incantations", (string)null);
                 });
 
+            modelBuilder.Entity("CharacterSheetAPI.Models.PsychologyEffect", b =>
+                {
+                    b.Property<int>("PsychologyEffectID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PsychologyEffectID"), 1L, 1);
+
+                    b.Property<int>("CharacterID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PsychologyEffectID");
+
+                    b.HasIndex("CharacterID");
+
+                    b.ToTable("PsychologyEffect", (string)null);
+                });
+
             modelBuilder.Entity("CharacterSheetAPI.Models.Skill", b =>
                 {
                     b.Property<int>("SkillID")
@@ -364,12 +360,6 @@ namespace CharacterSheetAPI.Migrations
 
             modelBuilder.Entity("CharacterSheetAPI.Models.Speed", b =>
                 {
-                    b.Property<int>("SpeedID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SpeedID"), 1L, 1);
-
                     b.Property<int>("CharacterID")
                         .HasColumnType("int");
 
@@ -382,10 +372,7 @@ namespace CharacterSheetAPI.Migrations
                     b.Property<short>("WalkPoints")
                         .HasColumnType("smallint");
 
-                    b.HasKey("SpeedID");
-
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasKey("CharacterID");
 
                     b.ToTable("Speeds", (string)null);
                 });
@@ -420,12 +407,6 @@ namespace CharacterSheetAPI.Migrations
 
             modelBuilder.Entity("CharacterSheetAPI.Models.Team", b =>
                 {
-                    b.Property<int>("TeamID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeamID"), 1L, 1);
-
                     b.Property<int>("CharacterID")
                         .HasColumnType("int");
 
@@ -441,49 +422,34 @@ namespace CharacterSheetAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TeamID");
-
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasKey("CharacterID");
 
                     b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("CharacterSheetAPI.Models.Vitality", b =>
                 {
-                    b.Property<int>("VitalityID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VitalityID"), 1L, 1);
-
                     b.Property<int>("CharacterID")
                         .HasColumnType("int");
 
                     b.Property<int>("HealthPoints")
                         .HasColumnType("int");
 
-                    b.HasKey("VitalityID");
+                    b.Property<int>("MaxHealthPoints")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasKey("CharacterID");
 
                     b.ToTable("Vitalities", (string)null);
                 });
 
             modelBuilder.Entity("CharacterSheetAPI.Models.Wealth", b =>
                 {
-                    b.Property<int>("WealthID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CharacterID")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WealthID"), 1L, 1);
 
                     b.Property<short>("Bronze")
                         .HasColumnType("smallint");
-
-                    b.Property<int>("CharacterID")
-                        .HasColumnType("int");
 
                     b.Property<short>("Gold")
                         .HasColumnType("smallint");
@@ -491,10 +457,7 @@ namespace CharacterSheetAPI.Migrations
                     b.Property<short>("Silver")
                         .HasColumnType("smallint");
 
-                    b.HasKey("WealthID");
-
-                    b.HasIndex("CharacterID")
-                        .IsUnique();
+                    b.HasKey("CharacterID");
 
                     b.ToTable("Wealths", (string)null);
                 });
@@ -533,13 +496,13 @@ namespace CharacterSheetAPI.Migrations
                     b.ToTable("Weapons", (string)null);
                 });
 
-            modelBuilder.Entity("CharacterSheetAPI.Models.Ambitions", b =>
+            modelBuilder.Entity("CharacterSheetAPI.Model.Character", b =>
                 {
-                    b.HasOne("CharacterSheetAPI.Model.Character", null)
-                        .WithOne("Ambitions")
-                        .HasForeignKey("CharacterSheetAPI.Models.Ambitions", "CharacterID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("CharacterSheetAPI.Models.Ambition", "Ambitions")
+                        .WithMany()
+                        .HasForeignKey("AmbitionsCharacterID");
+
+                    b.Navigation("Ambitions");
                 });
 
             modelBuilder.Entity("CharacterSheetAPI.Models.Appearance", b =>
@@ -563,8 +526,8 @@ namespace CharacterSheetAPI.Migrations
             modelBuilder.Entity("CharacterSheetAPI.Models.Characteristics", b =>
                 {
                     b.HasOne("CharacterSheetAPI.Model.Character", null)
-                        .WithOne("Characteristics")
-                        .HasForeignKey("CharacterSheetAPI.Models.Characteristics", "CharacterID")
+                        .WithMany("Characteristics")
+                        .HasForeignKey("CharacterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -596,10 +559,28 @@ namespace CharacterSheetAPI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CharacterSheetAPI.Models.HeroStats", b =>
+                {
+                    b.HasOne("CharacterSheetAPI.Model.Character", null)
+                        .WithOne("HeroStats")
+                        .HasForeignKey("CharacterSheetAPI.Models.HeroStats", "CharacterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CharacterSheetAPI.Models.Incantation", b =>
                 {
                     b.HasOne("CharacterSheetAPI.Model.Character", null)
                         .WithMany("Incantations")
+                        .HasForeignKey("CharacterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CharacterSheetAPI.Models.PsychologyEffect", b =>
+                {
+                    b.HasOne("CharacterSheetAPI.Model.Character", null)
+                        .WithMany("PsychologyEffects")
                         .HasForeignKey("CharacterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -670,14 +651,11 @@ namespace CharacterSheetAPI.Migrations
 
             modelBuilder.Entity("CharacterSheetAPI.Model.Character", b =>
                 {
-                    b.Navigation("Ambitions");
-
                     b.Navigation("Appearance");
 
                     b.Navigation("Armor");
 
-                    b.Navigation("Characteristics")
-                        .IsRequired();
+                    b.Navigation("Characteristics");
 
                     b.Navigation("Destiny");
 
@@ -685,7 +663,11 @@ namespace CharacterSheetAPI.Migrations
 
                     b.Navigation("Experience");
 
+                    b.Navigation("HeroStats");
+
                     b.Navigation("Incantations");
+
+                    b.Navigation("PsychologyEffects");
 
                     b.Navigation("Skills");
 
@@ -695,8 +677,7 @@ namespace CharacterSheetAPI.Migrations
 
                     b.Navigation("Team");
 
-                    b.Navigation("Vitality")
-                        .IsRequired();
+                    b.Navigation("Vitality");
 
                     b.Navigation("Wealth");
 

@@ -1,6 +1,6 @@
 ﻿namespace CharacterSheetAPI.Models
 {
-    public class Equipment
+    public class Equipment : IStatistic
     {
         public int EquipmentID { get; set; }
 

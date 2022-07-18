@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CharacterSheetAPI.Data;
+using CharacterSheetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CharacterSheetAPI.Data;
-using CharacterSheetAPI.Models;
 
 namespace CharacterSheetAPI.Controllers
 {
@@ -23,44 +18,45 @@ namespace CharacterSheetAPI.Controllers
 
         // GET: api/Ambitions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Ambitions>>> GetAmbitions()
+        public async Task<ActionResult<IEnumerable<Ambition>>> GetAmbitions()
         {
-          if (_context.Ambitions == null)
-          {
-              return NotFound();
-          }
+            if (_context.Ambitions == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Ambitions.ToListAsync();
         }
 
         // GET: api/Ambitions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Ambitions>> GetAmbitions(int id)
+        public async Task<ActionResult<Ambition>> GetAmbition(int id)
         {
-          if (_context.Ambitions == null)
-          {
-              return NotFound();
-          }
-            var ambitions = await _context.Ambitions.FindAsync(id);
+            if (_context.Ambitions == null)
+            {
+                return NotFound();
+            }
+            var ambition = await _context.Ambitions.FindAsync(id);
 
-            if (ambitions == null)
+            if (ambition == null)
             {
                 return NotFound();
             }
 
-            return ambitions;
+            return ambition;
         }
 
         // PUT: api/Ambitions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAmbitions(int id, Ambitions ambitions)
+        public async Task<IActionResult> PutAmbition(int id, Ambition ambition)
         {
-            if (id != ambitions.AmbitionsID)
+            if (id != ambition.CharacterID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(ambitions).State = EntityState.Modified;
+            _context.Entry(ambition).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +64,7 @@ namespace CharacterSheetAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AmbitionsExists(id))
+                if (!AmbitionExists(id))
                 {
                     return NotFound();
                 }
@@ -84,41 +80,41 @@ namespace CharacterSheetAPI.Controllers
         // POST: api/Ambitions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Ambitions>> PostAmbitions(Ambitions ambitions)
+        public async Task<ActionResult<Ambition>> PostAmbition(Ambition ambition)
         {
-          if (_context.Ambitions == null)
-          {
-              return Problem("Entity set 'DataContext.Ambitions'  is null.");
-          }
-            _context.Ambitions.Add(ambitions);
+            if (_context.Ambitions == null)
+            {
+                return Problem("Entity set 'DataContext.Ambitions'  is null.");
+            }
+            _context.Ambitions.Add(ambition);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAmbitions", new { id = ambitions.AmbitionsID }, ambitions);
+            return CreatedAtAction("GetAmbition", new { id = ambition.CharacterID }, ambition);
         }
 
         // DELETE: api/Ambitions/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAmbitions(int id)
+        public async Task<IActionResult> DeleteAmbition(int id)
         {
             if (_context.Ambitions == null)
             {
                 return NotFound();
             }
-            var ambitions = await _context.Ambitions.FindAsync(id);
-            if (ambitions == null)
+            var ambition = await _context.Ambitions.FindAsync(id);
+            if (ambition == null)
             {
                 return NotFound();
             }
 
-            _context.Ambitions.Remove(ambitions);
+            _context.Ambitions.Remove(ambition);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AmbitionsExists(int id)
+        private bool AmbitionExists(int id)
         {
-            return (_context.Ambitions?.Any(e => e.AmbitionsID == id)).GetValueOrDefault();
+            return (_context.Ambitions?.Any(e => e.CharacterID == id)).GetValueOrDefault();
         }
     }
 }

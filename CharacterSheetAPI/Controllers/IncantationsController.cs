@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CharacterSheetAPI.Data;
+using CharacterSheetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CharacterSheetAPI.Data;
-using CharacterSheetAPI.Models;
 
 namespace CharacterSheetAPI.Controllers
 {
@@ -23,23 +18,26 @@ namespace CharacterSheetAPI.Controllers
 
         // GET: api/Incantations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Incantation>>> GetIncantations()
+        public async Task<ActionResult<IEnumerable<Incantation>>> GetIncantations(int characterID = 0)
         {
-          if (_context.Incantations == null)
-          {
-              return NotFound();
-          }
-            return await _context.Incantations.ToListAsync();
+            if (_context.Incantations == null)
+            {
+                return NotFound();
+            }
+
+            return characterID == 0 ?
+                  await _context.Incantations.ToListAsync() :
+                  await _context.Incantations.Where(x => x.CharacterID == characterID).ToListAsync();
         }
 
         // GET: api/Incantations/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Incantation>> GetIncantation(int id)
         {
-          if (_context.Incantations == null)
-          {
-              return NotFound();
-          }
+            if (_context.Incantations == null)
+            {
+                return NotFound();
+            }
             var incantation = await _context.Incantations.FindAsync(id);
 
             if (incantation == null)
@@ -86,10 +84,10 @@ namespace CharacterSheetAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Incantation>> PostIncantation(Incantation incantation)
         {
-          if (_context.Incantations == null)
-          {
-              return Problem("Entity set 'DataContext.Incantations'  is null.");
-          }
+            if (_context.Incantations == null)
+            {
+                return Problem("Entity set 'DataContext.Incantations'  is null.");
+            }
             _context.Incantations.Add(incantation);
             await _context.SaveChangesAsync();
 

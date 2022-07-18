@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CharacterSheetAPI.Data;
+using CharacterSheetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CharacterSheetAPI.Data;
-using CharacterSheetAPI.Models;
 
 namespace CharacterSheetAPI.Controllers
 {
@@ -23,23 +18,26 @@ namespace CharacterSheetAPI.Controllers
 
         // GET: api/Characteristics
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Characteristics>>> GetCharacteristics()
+        public async Task<ActionResult<IEnumerable<Characteristics>>> GetCharacteristics(int characterID = 0)
         {
-          if (_context.Characteristics == null)
-          {
-              return NotFound();
-          }
-            return await _context.Characteristics.ToListAsync();
+            if (_context.Characteristics == null)
+            {
+                return NotFound();
+            }
+
+            return characterID == 0 ?
+                  await _context.Characteristics.ToListAsync() :
+                  await _context.Characteristics.Where(x => x.CharacterID == characterID).ToListAsync();
         }
 
         // GET: api/Characteristics/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Characteristics>> GetCharacteristics(int id)
+        public async Task<ActionResult<Characteristics>> GetCharacteristic(int id)
         {
-          if (_context.Characteristics == null)
-          {
-              return NotFound();
-          }
+            if (_context.Characteristics == null)
+            {
+                return NotFound();
+            }
             var characteristics = await _context.Characteristics.FindAsync(id);
 
             if (characteristics == null)
@@ -53,7 +51,7 @@ namespace CharacterSheetAPI.Controllers
         // PUT: api/Characteristics/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCharacteristics(int id, Characteristics characteristics)
+        public async Task<IActionResult> PutCharacteristic(int id, Characteristics characteristics)
         {
             if (id != characteristics.CharacteristicsID)
             {
@@ -68,7 +66,7 @@ namespace CharacterSheetAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CharacteristicsExists(id))
+                if (!CharacteristicExists(id))
                 {
                     return NotFound();
                 }
@@ -84,12 +82,12 @@ namespace CharacterSheetAPI.Controllers
         // POST: api/Characteristics
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Characteristics>> PostCharacteristics(Characteristics characteristics)
+        public async Task<ActionResult<Characteristics>> PostCharacteristic(Characteristics characteristics)
         {
-          if (_context.Characteristics == null)
-          {
-              return Problem("Entity set 'DataContext.Characteristics'  is null.");
-          }
+            if (_context.Characteristics == null)
+            {
+                return Problem("Entity set 'DataContext.Characteristics'  is null.");
+            }
             _context.Characteristics.Add(characteristics);
             await _context.SaveChangesAsync();
 
@@ -98,7 +96,7 @@ namespace CharacterSheetAPI.Controllers
 
         // DELETE: api/Characteristics/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCharacteristics(int id)
+        public async Task<IActionResult> DeleteCharacteristic(int id)
         {
             if (_context.Characteristics == null)
             {
@@ -116,7 +114,7 @@ namespace CharacterSheetAPI.Controllers
             return NoContent();
         }
 
-        private bool CharacteristicsExists(int id)
+        private bool CharacteristicExists(int id)
         {
             return (_context.Characteristics?.Any(e => e.CharacteristicsID == id)).GetValueOrDefault();
         }

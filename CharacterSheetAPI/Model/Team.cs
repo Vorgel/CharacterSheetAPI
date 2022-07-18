@@ -1,9 +1,10 @@
-﻿namespace CharacterSheetAPI.Models
-{
-    public class Team
-    {
-        public int TeamID { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace CharacterSheetAPI.Models
+{
+    public class Team : IStatistic
+    {
+        [Key]
         public int CharacterID { get; set; }
 
         public string Name { get; set; }

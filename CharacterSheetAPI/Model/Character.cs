@@ -12,13 +12,17 @@ namespace CharacterSheetAPI.Model
 
         public string Class { get; set; }
 
+        public string? Profession { get; set; }
+
+        public string? ProfessionLevel { get; set; }
+
         public string? ProfessionPath { get; set; }
 
         public string? Status { get; set; }
 
         public short? Age { get; set; }
 
-        public Characteristics? Characteristics { get; set; }
+        public List<Characteristics>? Characteristics { get; set; }
 
         public List<Skill>? Skills { get; set; }
 
@@ -28,17 +32,17 @@ namespace CharacterSheetAPI.Model
 
         public Appearance? Appearance { get; set; }
 
+        public HeroStats? HeroStats { get; set; }
 
         public Experience? Experience { get; set; }
 
         public Speed? Speed { get; set; }
 
-
         public List<Talent>? Talents { get; set; }
 
         public Team? Team { get; set; }
 
-        public Ambitions? Ambitions { get; set; }
+        //public Ambition? Ambitions { get; set; }
 
         public List<Armor>? Armor { get; set; }
 
@@ -46,8 +50,7 @@ namespace CharacterSheetAPI.Model
 
         public Destiny? Destiny { get; set; }
 
-        //public List<string>? PsychologyEffects { get; set; }
-
+        public List<PsychologyEffect>? PsychologyEffects { get; set; }
 
         public Wealth? Wealth { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace CharacterSheetAPI.Models
 {
-    public class Characteristics
+    public class Characteristics : IStatistic
     {
         public int CharacteristicsID { get; set; }
 

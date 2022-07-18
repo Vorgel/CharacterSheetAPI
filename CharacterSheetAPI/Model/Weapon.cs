@@ -2,7 +2,7 @@
 
 namespace CharacterSheetAPI.Models
 {
-    public class Weapon
+    public class Weapon : IStatistic
     {
         public int WeaponID { get; set; }
 

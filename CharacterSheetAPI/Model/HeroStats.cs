@@ -1,9 +1,10 @@
-﻿namespace CharacterSheetAPI.Models
-{
-    public class HeroStats
-    {
-        public int HeroStatsID { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace CharacterSheetAPI.Models
+{
+    public class HeroStats : IStatistic
+    {
+        [Key]
         public int CharacterID { get; set; }
 
         public short HeroPoints { get; set; }

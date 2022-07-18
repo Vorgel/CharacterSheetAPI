@@ -1,9 +1,10 @@
-﻿namespace CharacterSheetAPI.Models
-{
-    public class Wealth
-    {
-        public int WealthID { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace CharacterSheetAPI.Models
+{
+    public class Wealth : IStatistic
+    {
+        [Key]
         public int CharacterID { get; set; }
 
         public short Gold { get; set; }

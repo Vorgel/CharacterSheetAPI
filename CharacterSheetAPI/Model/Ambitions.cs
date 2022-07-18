@@ -1,9 +1,10 @@
-﻿namespace CharacterSheetAPI.Models
-{
-    public class Ambitions
-    {
-        public int AmbitionsID { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace CharacterSheetAPI.Models
+{
+    public class Ambition
+    {
+        [Key]
         public int CharacterID { get; set; }
 
         public string? LongTermAmbition { get; set; }

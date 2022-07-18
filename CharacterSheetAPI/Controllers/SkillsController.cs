@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CharacterSheetAPI.Data;
+using CharacterSheetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CharacterSheetAPI.Data;
-using CharacterSheetAPI.Models;
 
 namespace CharacterSheetAPI.Controllers
 {
@@ -23,23 +18,26 @@ namespace CharacterSheetAPI.Controllers
 
         // GET: api/Skills
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Skill>>> GetSkills()
+        public async Task<ActionResult<IEnumerable<Skill>>> GetSkills(int characterID = 0)
         {
-          if (_context.Skills == null)
-          {
-              return NotFound();
-          }
-            return await _context.Skills.ToListAsync();
+            if (_context.Skills == null)
+            {
+                return NotFound();
+            }
+
+            return characterID == 0 ?
+                  await _context.Skills.ToListAsync() :
+                  await _context.Skills.Where(x => x.CharacterID == characterID).ToListAsync();
         }
 
         // GET: api/Skills/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Skill>> GetSkill(int id)
         {
-          if (_context.Skills == null)
-          {
-              return NotFound();
-          }
+            if (_context.Skills == null)
+            {
+                return NotFound();
+            }
             var skill = await _context.Skills.FindAsync(id);
 
             if (skill == null)
@@ -86,10 +84,10 @@ namespace CharacterSheetAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Skill>> PostSkill(Skill skill)
         {
-          if (_context.Skills == null)
-          {
-              return Problem("Entity set 'DataContext.Skills'  is null.");
-          }
+            if (_context.Skills == null)
+            {
+                return Problem("Entity set 'DataContext.Skills'  is null.");
+            }
             _context.Skills.Add(skill);
             await _context.SaveChangesAsync();
 

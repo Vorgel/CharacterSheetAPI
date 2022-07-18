@@ -14,7 +14,7 @@ namespace CharacterSheetAPI.Data
 
         public DbSet<Characteristics> Characteristics { get; set; }
 
-        public DbSet<Ambitions> Ambitions { get; set; }
+        public DbSet<Ambition> Ambitions { get; set; }
 
         public DbSet<Appearance> Appearances { get; set; }
 
@@ -41,5 +41,7 @@ namespace CharacterSheetAPI.Data
         public DbSet<Wealth> Wealths { get; set; }
 
         public DbSet<Weapon> Weapons { get; set; }
+
+        public DbSet<PsychologyEffect>? PsychologyEffect { get; set; }
     }
 }

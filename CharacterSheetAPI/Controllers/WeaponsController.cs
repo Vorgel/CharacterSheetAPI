@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CharacterSheetAPI.Data;
+using CharacterSheetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CharacterSheetAPI.Data;
-using CharacterSheetAPI.Models;
 
 namespace CharacterSheetAPI.Controllers
 {
@@ -23,23 +18,26 @@ namespace CharacterSheetAPI.Controllers
 
         // GET: api/Weapons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
+        public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons(int characterID = 0)
         {
-          if (_context.Weapons == null)
-          {
-              return NotFound();
-          }
-            return await _context.Weapons.ToListAsync();
+            if (_context.Weapons == null)
+            {
+                return NotFound();
+            }
+
+            return characterID == 0 ?
+                  await _context.Weapons.ToListAsync() :
+                  await _context.Weapons.Where(x => x.CharacterID == characterID).ToListAsync();
         }
 
         // GET: api/Weapons/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Weapon>> GetWeapon(int id)
         {
-          if (_context.Weapons == null)
-          {
-              return NotFound();
-          }
+            if (_context.Weapons == null)
+            {
+                return NotFound();
+            }
             var weapon = await _context.Weapons.FindAsync(id);
 
             if (weapon == null)
@@ -86,10 +84,10 @@ namespace CharacterSheetAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
         {
-          if (_context.Weapons == null)
-          {
-              return Problem("Entity set 'DataContext.Weapons'  is null.");
-          }
+            if (_context.Weapons == null)
+            {
+                return Problem("Entity set 'DataContext.Weapons'  is null.");
+            }
             _context.Weapons.Add(weapon);
             await _context.SaveChangesAsync();
 

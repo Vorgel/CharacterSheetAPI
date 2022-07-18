@@ -1,9 +1,10 @@
-﻿namespace CharacterSheetAPI.Models
-{
-    public class Speed
-    {
-        public int SpeedID { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace CharacterSheetAPI.Models
+{
+    public class Speed : IStatistic
+    {
+        [Key]
         public int CharacterID { get; set; }
 
         public short SpeedPoints { get; set; }

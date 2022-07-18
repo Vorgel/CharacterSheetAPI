@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CharacterSheetAPI.Data;
+using CharacterSheetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CharacterSheetAPI.Data;
-using CharacterSheetAPI.Models;
 
 namespace CharacterSheetAPI.Controllers
 {
@@ -23,23 +18,26 @@ namespace CharacterSheetAPI.Controllers
 
         // GET: api/Armors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Armor>>> GetArmors()
+        public async Task<ActionResult<IEnumerable<Armor>>> GetArmors(int characterID = 0)
         {
-          if (_context.Armors == null)
-          {
-              return NotFound();
-          }
-            return await _context.Armors.ToListAsync();
+            if (_context.Armors == null)
+            {
+                return NotFound();
+            }
+
+            return characterID == 0 ?
+                  await _context.Armors.ToListAsync() :
+                  await _context.Armors.Where(x => x.CharacterID == characterID).ToListAsync();
         }
 
         // GET: api/Armors/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Armor>> GetArmor(int id)
         {
-          if (_context.Armors == null)
-          {
-              return NotFound();
-          }
+            if (_context.Armors == null)
+            {
+                return NotFound();
+            }
             var armor = await _context.Armors.FindAsync(id);
 
             if (armor == null)
@@ -86,10 +84,10 @@ namespace CharacterSheetAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Armor>> PostArmor(Armor armor)
         {
-          if (_context.Armors == null)
-          {
-              return Problem("Entity set 'DataContext.Armors'  is null.");
-          }
+            if (_context.Armors == null)
+            {
+                return Problem("Entity set 'DataContext.Armors'  is null.");
+            }
             _context.Armors.Add(armor);
             await _context.SaveChangesAsync();
 

@@ -2,15 +2,15 @@
 {
     public enum CharacteristicsType
     {
-        Combat,
-        Shooting,
-        Strenght,
-        Endurance,
-        Intuition,
-        Agility,
-        Dexterity,
-        Inteligence,
-        Willpower,
-        Manners,
+        WW,
+        US,
+        S,
+        Wt,
+        I,
+        Zr,
+        Zw,
+        Int,
+        SW,
+        Ogd,
     }
 }
